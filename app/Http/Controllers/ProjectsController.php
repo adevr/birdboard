@@ -16,6 +16,11 @@ class ProjectsController extends Controller
         return view("projects.index", compact('projects'));
     }
 
+    public function show(Project $project): View
+    {
+        return view("projects.show", compact('project'));
+    }
+
     public function store(): RedirectResponse
     {
         $input = request()->validate( ["title" => "required", "description" => "required"]);
