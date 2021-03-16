@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>BirdBoard</title>
+    <title>BirdB oard</title>
 </head>
 <body>
 <h1>BirdBoard</h1>
