@@ -10,6 +10,7 @@ class ProjectTest extends TestCase
 {
 
     use RefreshDatabase;
+
     /**
      * @test
      */
@@ -18,5 +19,14 @@ class ProjectTest extends TestCase
         $project = Project::factory()->create();
 
         $this->assertEquals("/projects/{$project->id}", $project->path());
+    }
+
+    /**
+     * @test
+     */
+    public function it_belongs_to_a_user()
+    {
+        $project = Project::factory()->create();
+        $this->assertInstanceOf('App\Models\User', $project->owner);
     }
 }

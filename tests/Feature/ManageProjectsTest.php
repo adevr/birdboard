@@ -14,10 +14,27 @@ class ManageProjectsTest extends TestCase
     /**
      * @test
      */
-    public function only_authenticated_users_can_create_projects()
+    public function guests_cannot_create_projects()
     {
         $attributes = Project::factory()->raw();
         $this->post("/projects", $attributes)->assertRedirect('login');
+    }
+
+    /**
+     * @test
+     */
+    public function guests_cannot_view_projects()
+    {
+        $this->get("/projects")->assertRedirect('login');
+    }
+
+    /**
+     * @test
+     */
+    public function guests_cannot_view_a_single_projects()
+    {
+        $project = Project::factory()->create();
+        $this->get($project->path())->assertRedirect('login');
     }
 
     /**
@@ -38,13 +55,25 @@ class ManageProjectsTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_view_a_project()
+    public function a_user_can_view_their_project()
     {
-        $project = Project::factory()->create();
+        $this->be(User::factory()->create());
+        $project = Project::factory()->create(['owner_id' => auth()->id()]);
 
         $this->get($project->path())
             ->assertSee($project->title)
             ->assertSee($project->description);
+    }
+
+    /**
+     * @test
+     */
+    public function a_authenticated_user_cannot_view_others_project()
+    {
+        $this->be(User::factory()->create());
+        $project = Project::factory()->create();
+
+        $this->get($project->path())->assertStatus(403);
     }
 
     /**
