@@ -38,6 +38,16 @@ class ProjectsController extends Controller
     }
 
     /**
+     * It shows the form for creating a project
+     *
+     * @return View
+     */
+    public function create(): View
+    {
+        return view("projects.create");
+    }
+
+    /**
      * It creates a project for a specific authorized user
      *
      * @return RedirectResponse

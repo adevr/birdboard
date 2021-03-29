@@ -43,9 +43,10 @@ class ManageProjectsTest extends TestCase
     public function a_user_can_create_a_project()
     {
         $this->actingAs(User::factory()->create());
+        $this->get("/projects/create")->assertStatus(200);
+
         $attributes = Project::factory()->raw();
         $this->post("/projects", $attributes)->assertRedirect("/projects");
-
         $attributes['owner_id'] = auth()->id();
 
         $this->assertDatabaseHas("projects", $attributes);
